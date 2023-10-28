@@ -13,7 +13,7 @@ class MyConvNet(nn.Module):
             nn.AvgPool2d(kernel_size=4)
         )
 
-        self.fc1 = nn.Linear(392, 10)
+        self.fc1 = nn.Linear(288, 10)
 
     def forward(self, x):
         out = self.layer1(x)
