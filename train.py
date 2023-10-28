@@ -27,10 +27,10 @@ def train(mode="normal"):
 
         if mode == "weight_same":
 
-            p = torch.rand((10,49))
+            p = torch.rand((10,36))
 
-            model.fc1.weight.data[:, 0:49] = p
-            model.fc1.weight.data[:, 49:98] = p
+            model.fc1.weight.data[:, 0:36] = p
+            model.fc1.weight.data[:, 36:72] = p
 
 
     analyze.analyze(model, mode, "before")

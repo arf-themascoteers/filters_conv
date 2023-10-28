@@ -7,9 +7,9 @@ import torch.nn.functional as F
 def plot_tensor(tensor,folder, filename):
     mean = torch.mean(tensor)
     tensor = tensor.data.clone()
-    tensor[tensor >= mean] = 255
-    tensor[tensor < mean] = 0
-    plt.imshow(tensor.cpu().numpy(), cmap="hot")
+    # tensor[tensor >= mean] = 255
+    # tensor[tensor < mean] = 0
+    plt.imshow(tensor.cpu().numpy(), cmap="gray")
     plt.savefig(f"{folder}/{filename}")
 
 
