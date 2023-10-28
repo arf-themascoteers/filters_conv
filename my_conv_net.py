@@ -8,7 +8,7 @@ class MyConvNet(nn.Module):
         super(MyConvNet, self).__init__()
 
         self.layer1 = nn.Sequential(
-            nn.Conv2d(1, 8, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.Conv2d(1, 8, kernel_size=5, bias=False),
             nn.ReLU(),
             nn.AvgPool2d(kernel_size=4)
         )
