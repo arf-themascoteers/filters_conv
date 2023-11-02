@@ -9,18 +9,18 @@ import analyze
 
 
 def train(mode="normal"):
-    num_epochs = 2
+    num_epochs = 3
     num_classes = 10
     learning_rate = 0.001
     trans = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
     train_dataset = torchvision.datasets.MNIST(root=constants.DATA_PATH, train=True, transform=trans, download=True)
-    train_loader = DataLoader(dataset=train_dataset, batch_size=constants.batch_size, shuffle=True)
+    train_loader = DataLoader(dataset=train_dataset, batch_size=constants.batch_size)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model = MyConvNet()
     if mode != "normal":
-        filters = model.layer1[0].weight.data
+        filters = model.conv.weight.data
         r = torch.rand(5, 5)
         filters[0, 0] = r
         filters[1, 0] = r
@@ -48,6 +48,8 @@ def train(mode="normal"):
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
+            if i==0:
+                analyze.plot_fms(model, mode, epoch)
             loss = criterion(outputs, labels)
             loss_list.append(loss.item())
             optimizer.zero_grad()
@@ -58,17 +60,6 @@ def train(mode="normal"):
             correct = (predicted == labels).sum().item()
             acc_list.append(correct / total)
 
-            # if (i + 1) % 100 == 0:
-            #     print(
-            #         "Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.2f}%"\
-            #             .format(
-            #                 epoch + 1,
-            #                 num_epochs, i + 1,
-            #                 total_step,
-            #                 loss.item(),
-            #                 (correct / total) * 100
-            #             )
-            #     )
     torch.save(model, constants.DEFAULT_MODEL_PATH)
     analyze.analyze(model, mode, "after")
     return model
